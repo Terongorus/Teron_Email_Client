@@ -1,5 +1,21 @@
 # Changelog
 
+## 2.0.1 — Post-rewrite fixes
+
+### Fixed
+
+- Resource images (`email.ico`, `gmail.png`, `outlook.png`) were moved into a `Resources/`
+  folder; the `.csproj` and the window/title-bar icon references were updated automatically,
+  but the hardcoded `Image` sources on the welcome screen and the "Add account" dialog were
+  not, leaving the Gmail/Outlook logos blank. Updated all remaining references to
+  `/Resources/...` and removed the now-unused `ServiceDefinition.IconPath` property.
+- Removing the last remaining account left a stale, garbled frame of that account's last
+  rendered page ghosted on screen over the welcome view. Caused by disposing the WebView2
+  control in the same tick as switching to the empty/welcome state, before WPF had repainted
+  the "now hidden" state — a known WebView2/WPF airspace timing issue. Fixed by updating the
+  selected account *before* removing it from the list, and deferring the native control's
+  teardown (`Children.Remove` + `Dispose`) to a Background-priority dispatcher callback.
+
 ## 2.0.0 — .NET 10 / WPF rewrite
 
 Full rewrite of the application, moving off .NET Framework 4.8.1/WinForms onto .NET 10/WPF,
