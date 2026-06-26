@@ -39,13 +39,13 @@
             <WrapPanel>
                 <ToggleButton x:Name="GmailTile" Style="{StaticResource ServiceTileToggleStyle}" Tag="Gmail" Checked="ServiceTile_Checked">
                     <StackPanel>
-                        <Image Source="/gmail.png" Width="36" Height="36" HorizontalAlignment="Center" />
+                        <Image Source="/Resources/gmail.png" Width="36" Height="36" HorizontalAlignment="Center" />
                         <TextBlock Text="Gmail" Margin="0,8,0,0" FontSize="12" HorizontalAlignment="Center" />
                     </StackPanel>
                 </ToggleButton>
                 <ToggleButton x:Name="OutlookTile" Style="{StaticResource ServiceTileToggleStyle}" Tag="Outlook" Checked="ServiceTile_Checked">
                     <StackPanel>
-                        <Image Source="/outlook.png" Width="36" Height="36" HorizontalAlignment="Center" />
+                        <Image Source="/Resources/outlook.png" Width="36" Height="36" HorizontalAlignment="Center" />
                         <TextBlock Text="Outlook" Margin="0,8,0,0" FontSize="12" HorizontalAlignment="Center" />
                     </StackPanel>
                 </ToggleButton>

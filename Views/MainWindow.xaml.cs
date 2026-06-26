@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
+using System.Windows.Threading;
 using Microsoft.Web.WebView2.Core;
 using Microsoft.Web.WebView2.Wpf;
 using TeronEmailClient.Models;
@@ -68,16 +69,25 @@ public partial class MainWindow : Window
                 continue;
             }
 
+            // Hide it now, but defer destroying the native browser control to a Background-priority
+            // callback so WPF gets a chance to actually repaint the "now hidden" state first. Tearing
+            // the control down in the same tick as the visibility/selection change leaves a stale
+            // frame of its last rendered page ghosted on screen (a WebView2/airspace quirk).
+            webView.Visibility = Visibility.Collapsed;
+
             if (_activeWebView == webView)
             {
                 _activeWebView = null;
             }
 
-            WebViewHost.Children.Remove(webView);
-            string? profileDirectory = webView.CreationProperties?.UserDataFolder;
-            webView.Dispose();
+            Dispatcher.BeginInvoke(DispatcherPriority.Background, () =>
+            {
+                WebViewHost.Children.Remove(webView);
+                string? profileDirectory = webView.CreationProperties?.UserDataFolder;
+                webView.Dispose();
 
-            TryDeleteProfileDirectory(profileDirectory);
+                TryDeleteProfileDirectory(profileDirectory);
+            });
         }
     }
 

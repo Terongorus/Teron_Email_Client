@@ -145,13 +145,13 @@
                         <WrapPanel HorizontalAlignment="Center">
                             <Button Style="{StaticResource ServiceTileButtonStyle}" Tag="Gmail" Click="WelcomeTile_Click">
                                 <StackPanel>
-                                    <Image Source="/gmail.png" Width="40" Height="40" HorizontalAlignment="Center" />
+                                    <Image Source="/Resources/gmail.png" Width="40" Height="40" HorizontalAlignment="Center" />
                                     <TextBlock Text="Gmail" Margin="0,10,0,0" FontSize="13" HorizontalAlignment="Center" />
                                 </StackPanel>
                             </Button>
                             <Button Style="{StaticResource ServiceTileButtonStyle}" Tag="Outlook" Click="WelcomeTile_Click">
                                 <StackPanel>
-                                    <Image Source="/outlook.png" Width="40" Height="40" HorizontalAlignment="Center" />
+                                    <Image Source="/Resources/outlook.png" Width="40" Height="40" HorizontalAlignment="Center" />
                                     <TextBlock Text="Outlook" Margin="0,10,0,0" FontSize="13" HorizontalAlignment="Center" />
                                 </StackPanel>
                             </Button>

@@ -89,12 +89,12 @@ public partial class MainViewModel : ObservableObject
 
     public void RemoveAccount(AccountViewModel account)
     {
-        Accounts.Remove(account);
         if (SelectedAccount == account)
         {
-            SelectedAccount = Accounts.FirstOrDefault();
+            SelectedAccount = Accounts.FirstOrDefault(a => a != account);
         }
 
+        Accounts.Remove(account);
         _ = PersistAsync();
     }
 
