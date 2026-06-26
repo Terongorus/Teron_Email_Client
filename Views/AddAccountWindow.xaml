@@ -1,0 +1,89 @@
+<Window x:Class="TeronEmailClient.Views.AddAccountWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Add account"
+        Width="480" Height="480"
+        MinWidth="480" MinHeight="480"
+        WindowStartupLocation="CenterOwner"
+        Background="{DynamicResource ContentBackgroundBrush}"
+        BorderBrush="{DynamicResource WindowBorderBrush}"
+        BorderThickness="1"
+        FontFamily="{StaticResource UiFontFamily}"
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        ShowInTaskbar="False">
+
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="36" ResizeBorderThickness="0" GlassFrameThickness="0" UseAeroCaptionButtons="False" />
+    </WindowChrome.WindowChrome>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="36" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Background="{DynamicResource TitleBarBackgroundBrush}">
+            <TextBlock Text="Add account" Margin="16,0" VerticalAlignment="Center" FontSize="13"
+                       Foreground="{DynamicResource TitleBarForegroundBrush}" />
+            <Button Style="{StaticResource CloseTitleBarButtonStyle}" HorizontalAlignment="Right"
+                    WindowChrome.IsHitTestVisibleInChrome="True" Click="CloseButton_Click">
+                <Path Style="{StaticResource ButtonIconPathStyle}" Data="{StaticResource IconClose}" />
+            </Button>
+        </Grid>
+
+        <StackPanel Grid.Row="1" Margin="24,20,24,20">
+            <TextBlock Text="Choose a service" FontSize="13" Margin="0,0,0,10"
+                       Foreground="{DynamicResource TextSecondaryBrush}" />
+
+            <WrapPanel>
+                <ToggleButton x:Name="GmailTile" Style="{StaticResource ServiceTileToggleStyle}" Tag="Gmail" Checked="ServiceTile_Checked">
+                    <StackPanel>
+                        <Image Source="/gmail.png" Width="36" Height="36" HorizontalAlignment="Center" />
+                        <TextBlock Text="Gmail" Margin="0,8,0,0" FontSize="12" HorizontalAlignment="Center" />
+                    </StackPanel>
+                </ToggleButton>
+                <ToggleButton x:Name="OutlookTile" Style="{StaticResource ServiceTileToggleStyle}" Tag="Outlook" Checked="ServiceTile_Checked">
+                    <StackPanel>
+                        <Image Source="/outlook.png" Width="36" Height="36" HorizontalAlignment="Center" />
+                        <TextBlock Text="Outlook" Margin="0,8,0,0" FontSize="12" HorizontalAlignment="Center" />
+                    </StackPanel>
+                </ToggleButton>
+            </WrapPanel>
+
+            <Grid Margin="0,18,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Border Grid.Column="0" Height="1" Background="{DynamicResource BorderBrush}" VerticalAlignment="Center" />
+                <TextBlock Grid.Column="1" Text="OR" Margin="10,0" FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}" />
+                <Border Grid.Column="2" Height="1" Background="{DynamicResource BorderBrush}" VerticalAlignment="Center" />
+            </Grid>
+
+            <ToggleButton x:Name="CustomTile" Style="{StaticResource CustomTileBarStyle}" Tag="Custom" Margin="0,18,0,0" Checked="ServiceTile_Checked">
+                <StackPanel Orientation="Horizontal">
+                    <Border Width="28" Height="28" CornerRadius="14" Background="#6B5CE0">
+                        <TextBlock Text="+" Foreground="White" FontSize="16" FontWeight="SemiBold"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                    <TextBlock Text="Custom mailbox URL" Margin="10,0,0,0" FontSize="13" VerticalAlignment="Center" />
+                </StackPanel>
+            </ToggleButton>
+
+            <TextBlock Text="Display name" FontSize="13" Margin="0,18,0,6" Foreground="{DynamicResource TextSecondaryBrush}" />
+            <TextBox x:Name="DisplayNameBox" Style="{StaticResource ModernTextBoxStyle}" />
+
+            <TextBlock x:Name="UrlLabel" Text="Mailbox URL" FontSize="13" Margin="0,14,0,6"
+                       Foreground="{DynamicResource TextSecondaryBrush}" Visibility="Collapsed" />
+            <TextBox x:Name="UrlBox" Style="{StaticResource ModernTextBoxStyle}" Visibility="Collapsed" />
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,22,0,0">
+                <Button Content="Cancel" Style="{StaticResource SecondaryButtonStyle}" Margin="0,0,8,0" Click="CancelButton_Click" />
+                <Button x:Name="AddButton" Content="Add account" Style="{StaticResource PrimaryButtonStyle}"
+                        Click="AddButton_Click" IsEnabled="False" />
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>

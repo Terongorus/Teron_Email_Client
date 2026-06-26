@@ -1,0 +1,103 @@
+<Window x:Class="TeronEmailClient.Views.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:converters="clr-namespace:TeronEmailClient.Converters"
+        Title="Settings"
+        Width="420" Height="540"
+        MinWidth="420" MinHeight="420"
+        WindowStartupLocation="CenterOwner"
+        Background="{DynamicResource ContentBackgroundBrush}"
+        BorderBrush="{DynamicResource WindowBorderBrush}"
+        BorderThickness="1"
+        FontFamily="{StaticResource UiFontFamily}"
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        ShowInTaskbar="False">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <!-- Merged here (in addition to the Application level) so that StaticResource lookups
+                 inside the deferred ItemsControl.ItemTemplate below can resolve icon/style resources -
+                 deferred template content only sees the resource scope of its own file. -->
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Themes/Styles.xaml" />
+                <ResourceDictionary Source="/Themes/Icons.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="36" ResizeBorderThickness="0" GlassFrameThickness="0" UseAeroCaptionButtons="False" />
+    </WindowChrome.WindowChrome>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="36" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Background="{DynamicResource TitleBarBackgroundBrush}">
+            <TextBlock Text="Settings" Margin="16,0" VerticalAlignment="Center" FontSize="13"
+                       Foreground="{DynamicResource TitleBarForegroundBrush}" />
+            <Button Style="{StaticResource CloseTitleBarButtonStyle}" HorizontalAlignment="Right"
+                    WindowChrome.IsHitTestVisibleInChrome="True" Click="CloseButton_Click">
+                <Path Style="{StaticResource ButtonIconPathStyle}" Data="{StaticResource IconClose}" />
+            </Button>
+        </Grid>
+
+        <ScrollViewer Grid.Row="1" Padding="24,20,24,20" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <TextBlock Text="General" FontSize="13" FontWeight="SemiBold" Margin="0,0,0,12" />
+
+                <Grid Margin="0,0,0,16">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Remember last opened account on startup" VerticalAlignment="Center" TextWrapping="Wrap" />
+                    <CheckBox Grid.Column="1" Style="{StaticResource ToggleSwitchStyle}"
+                              IsChecked="{Binding RememberLastAccount}" Margin="12,0,0,0" />
+                </Grid>
+
+                <Grid Margin="0,0,0,16">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Dark mode" VerticalAlignment="Center" />
+                    <CheckBox x:Name="DarkModeToggle" Grid.Column="1" Style="{StaticResource ToggleSwitchStyle}"
+                              Margin="12,0,0,0" Checked="DarkModeToggle_Changed" Unchecked="DarkModeToggle_Changed" />
+                </Grid>
+
+                <TextBlock Text="Accounts" FontSize="13" FontWeight="SemiBold" Margin="0,12,0,12" />
+
+                <ItemsControl ItemsSource="{Binding Accounts}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Margin="0,0,0,8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <Border Width="28" Height="28" CornerRadius="14"
+                                        Background="{Binding AccentColor, Converter={x:Static converters:HexColorToBrushConverter.Instance}}">
+                                    <TextBlock Text="{Binding Initial}" Foreground="White" FontSize="12" FontWeight="SemiBold"
+                                               HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                </Border>
+
+                                <TextBlock Grid.Column="1" Text="{Binding DisplayName}" VerticalAlignment="Center" Margin="10,0,0,0" />
+
+                                <Button Grid.Column="2" Style="{StaticResource ToolbarIconButtonStyle}"
+                                        ToolTip="Remove account" Click="RemoveAccountButton_Click" Tag="{Binding}">
+                                    <Path Style="{StaticResource ButtonIconPathStyle}" Data="{StaticResource IconDelete}" />
+                                </Button>
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Window>
