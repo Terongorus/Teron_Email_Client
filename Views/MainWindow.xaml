@@ -10,7 +10,7 @@
         FontFamily="{StaticResource UiFontFamily}"
         WindowStyle="None"
         ResizeMode="CanResize"
-        Icon="/email.ico"
+        Icon="/Resources/email.ico"
         StateChanged="Window_StateChanged">
 
     <WindowChrome.WindowChrome>
@@ -35,7 +35,7 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <Image Grid.Column="0" Source="/email.ico" Width="18" Height="18" Margin="14,0,8,0" VerticalAlignment="Center" />
+            <Image Grid.Column="0" Source="/Resources/email.ico" Width="18" Height="18" Margin="14,0,8,0" VerticalAlignment="Center" />
 
             <TextBlock Grid.Column="1" VerticalAlignment="Center" FontSize="12"
                        Foreground="{DynamicResource TitleBarForegroundBrush}"

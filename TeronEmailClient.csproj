@@ -9,7 +9,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <LangVersion>latest</LangVersion>
-    <ApplicationIcon>email.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\email.ico</ApplicationIcon>
     <Deterministic>true</Deterministic>
     <RuntimeIdentifiers>win-x64;win-x86</RuntimeIdentifiers>
 
@@ -28,9 +28,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="email.ico" />
-    <Resource Include="gmail.png" />
-    <Resource Include="outlook.png" />
+    <Page Include="App.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\email.ico" />
+    <Resource Include="Resources\gmail.png" />
+    <Resource Include="Resources\outlook.png" />
   </ItemGroup>
 
 </Project>
