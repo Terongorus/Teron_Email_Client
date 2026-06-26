@@ -1,5 +1,29 @@
 # Changelog
 
+## 2.1.0 — Automated installer packaging
+
+### Added
+
+- An [Inno Setup](https://jrsoftware.org/isinfo.php) script (`Installer/TeronEmailClient.iss`)
+  that packages the self-contained publish output into a proper Windows installer: Start Menu
+  shortcuts, an optional desktop shortcut, a license page, and a normal uninstall entry in
+  "Apps & features".
+- Installer creation is wired directly into the publish pipeline via a `BuildInnoSetupInstaller`
+  MSBuild target (`AfterTargets="Publish"`) in the `.csproj`, so running
+  `dotnet publish -p:PublishProfile=win-x64` — or clicking **Publish** in Visual Studio with
+  that profile selected — builds, publishes, *and* produces
+  `bin\InstallerPackage\TeronEmailClientSetup-win-x64.exe` in one step. No separate tool
+  invocation or manual script run is needed. If Inno Setup isn't installed, the step is skipped
+  with an MSBuild warning rather than failing the publish.
+- The app version is passed from the `.csproj` into the installer script as a preprocessor
+  define, so the installer's version can't silently drift from the app's.
+
+### Fixed
+
+- The default install directory was `C:\Program Files\Teron's Email Client` — the apostrophe
+  and space can trip up scripts/tools that don't quote paths. Changed to
+  `C:\Program Files\TeronEmailClient`.
+
 ## 2.0.1 — Post-rewrite fixes
 
 ### Fixed

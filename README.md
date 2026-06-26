@@ -45,7 +45,30 @@ dotnet publish -p:PublishProfile=win-x64 -c Release
 dotnet publish -p:PublishProfile=win-x86 -c Release
 ```
 
-Output goes to `bin\Release\net10.0-windows\publish\win-x64\` (or `win-x86`).
+(Or, in Visual Studio: right-click the project → **Publish** → pick the `win-x64`/`win-x86`
+profile.) The published app goes to `bin\Publish\TeronEmailClient_Win_x64\` (or `_x86`).
+
+### Installer package
+
+Publishing also builds a ready-to-distribute Windows installer automatically — no separate
+step required. It uses [Inno Setup](https://jrsoftware.org/isinfo.php), so install it once
+first:
+
+```bash
+winget install JRSoftware.InnoSetup
+```
+
+After that, every `dotnet publish -p:PublishProfile=win-x64` (or the Visual Studio Publish
+button) also produces:
+
+```text
+bin\InstallerPackage\TeronEmailClientSetup-win-x64.exe
+```
+
+That single file is what you'd attach to a GitHub release. If Inno Setup isn't installed, this
+step is skipped with a build warning — the publish itself still succeeds. See
+`Installer/TeronEmailClient.iss` for the packaging script and the `BuildInnoSetupInstaller`
+MSBuild target in `TeronEmailClient.csproj` for how it's wired into the publish pipeline.
 
 ## Configuration
 

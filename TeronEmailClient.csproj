@@ -37,4 +37,31 @@
     <Resource Include="Resources\outlook.png" />
   </ItemGroup>
 
+  <!--
+    Builds the Inno Setup installer right after `dotnet publish`/VS Publish finishes writing
+    the self-contained output, so publishing the win-x64 or win-x86 profile produces a ready-to-
+    distribute "TeronEmailClientSetup-<arch>.exe" in bin\InstallerPackage with no extra steps.
+    No-ops (with a warning) if Inno Setup isn't installed, so it never breaks a plain publish/build.
+
+    Everything here is computed inside the target body, evaluated when the target actually runs,
+    rather than in a top-level PropertyGroup: publish-profile properties like RuntimeIdentifier
+    and SelfContained aren't populated yet during the project's normal (early) static evaluation
+    of top-level PropertyGroups - only once the publish pipeline itself is running.
+  -->
+  <Target Name="BuildInnoSetupInstaller" AfterTargets="Publish">
+    <PropertyGroup>
+      <InnoSetupArch Condition="'$(RuntimeIdentifier)' == 'win-x64'">x64</InnoSetupArch>
+      <InnoSetupArch Condition="'$(RuntimeIdentifier)' == 'win-x86'">x86</InnoSetupArch>
+
+      <InnoSetupCompiler Condition="'$(InnoSetupCompiler)' == '' AND Exists('$(LocalAppData)\Programs\Inno Setup 6\ISCC.exe')">$(LocalAppData)\Programs\Inno Setup 6\ISCC.exe</InnoSetupCompiler>
+      <InnoSetupCompiler Condition="'$(InnoSetupCompiler)' == '' AND Exists('$(MSBuildProgramFiles32)\Inno Setup 6\ISCC.exe')">$(MSBuildProgramFiles32)\Inno Setup 6\ISCC.exe</InnoSetupCompiler>
+      <InnoSetupCompiler Condition="'$(InnoSetupCompiler)' == '' AND Exists('$(ProgramFiles)\Inno Setup 6\ISCC.exe')">$(ProgramFiles)\Inno Setup 6\ISCC.exe</InnoSetupCompiler>
+    </PropertyGroup>
+
+    <Exec Command="&quot;$(InnoSetupCompiler)&quot; /DArch=$(InnoSetupArch) /DMyAppVersion=$(FileVersion) &quot;$(MSBuildProjectDirectory)\Installer\TeronEmailClient.iss&quot;"
+          Condition="'$(InnoSetupArch)' != '' AND '$(SelfContained)' == 'true' AND '$(InnoSetupCompiler)' != ''" />
+    <Warning Text="Inno Setup (ISCC.exe) was not found in the usual install locations; skipping installer build. Install it with 'winget install JRSoftware.InnoSetup' to enable this step."
+              Condition="'$(InnoSetupArch)' != '' AND '$(SelfContained)' == 'true' AND '$(InnoSetupCompiler)' == ''" />
+  </Target>
+
 </Project>
