@@ -1,4 +1,4 @@
-; Inno Setup script for Teron's Email Client.
+; Inno Setup script for Teron Email Client.
 ;
 ; Normally you don't need to run this directly: publishing the win-x64 or win-x86 profile
 ; (via "dotnet publish -p:PublishProfile=win-x64" or Visual Studio's Publish dialog) builds
@@ -16,10 +16,10 @@
 #endif
 
 #ifndef MyAppVersion
-  #define MyAppVersion "2.0.0"
+  #define MyAppVersion "2.1.1"
 #endif
 
-#define MyAppName "Teron's Email Client"
+#define MyAppName "Teron Email Client"
 #define MyAppPublisher "Teronverse"
 #define MyAppExeName "TeronEmailClient.exe"
 #define MyPublishDir "..\bin\Publish\TeronEmailClient_Win_" + Arch

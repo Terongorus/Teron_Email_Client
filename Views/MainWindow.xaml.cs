@@ -27,6 +27,7 @@ public partial class MainWindow : Window
         DataContext = viewModel;
 
         InitializeComponent();
+        Title = AppInfo.DisplayName;
 
         viewModel.PropertyChanged += OnViewModelPropertyChanged;
         viewModel.Accounts.CollectionChanged += OnAccountsCollectionChanged;
@@ -118,7 +119,7 @@ public partial class MainWindow : Window
             existing.Visibility = Visibility.Collapsed;
         }
 
-        Title = account is null ? "Teron's Email Client" : $"{account.DisplayName} - Teron's Email Client";
+        Title = account is null ? AppInfo.DisplayName : $"{account.DisplayName} - {AppInfo.DisplayName}";
 
         if (account is null)
         {

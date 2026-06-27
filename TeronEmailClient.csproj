@@ -13,12 +13,12 @@
     <Deterministic>true</Deterministic>
     <RuntimeIdentifiers>win-x64;win-x86</RuntimeIdentifiers>
 
-    <Product>Teron's Email Client (TEC)</Product>
+    <Product>Teron Email Client (TEC)</Product>
     <Company>Teronverse</Company>
     <Copyright>Copyright © 2025-2026</Copyright>
     <Description>An open source, lightweight email client shell that hosts Gmail, Outlook and other webmail services side by side, switchable instantly like Outlook 365.</Description>
-    <AssemblyVersion>2.0.0.0</AssemblyVersion>
-    <FileVersion>2.0.0.0</FileVersion>
+    <AssemblyVersion>2.1.1</AssemblyVersion>
+    <FileVersion>2.1.1</FileVersion>
     <NeutralLanguage>en</NeutralLanguage>
   </PropertyGroup>
 

@@ -1,4 +1,4 @@
-# Teron's Email Client (TEC)
+# Teron Email Client (TEC)
 
 A lightweight, modern desktop shell for your webmail accounts. Add Gmail, Outlook, or any
 custom webmail URL and switch between them instantly, side by side, the way Outlook 365's
