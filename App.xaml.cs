@@ -29,8 +29,8 @@ public partial class App : Application
         if (!createdNew)
         {
             MessageBox.Show(
-                "Teron's Email Client is already running.",
-                "Teron's Email Client",
+                $"{AppInfo.DisplayName} is already running.",
+                AppInfo.DisplayName,
                 MessageBoxButton.OK,
                 MessageBoxImage.Information);
             Shutdown();
