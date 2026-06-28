@@ -11,14 +11,19 @@
     <LangVersion>latest</LangVersion>
     <ApplicationIcon>Resources\email.ico</ApplicationIcon>
     <Deterministic>true</Deterministic>
+    <!-- Without this, the SDK appends "+<git-commit-sha>" to AssemblyInformationalVersion
+         (read for the main window title), since Deterministic builds in a git repo include
+         source revision info there by default. -->
+    <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
     <RuntimeIdentifiers>win-x64;win-x86</RuntimeIdentifiers>
 
     <Product>Teron Email Client (TEC)</Product>
     <Company>Teronverse</Company>
     <Copyright>Copyright © 2025-2026</Copyright>
     <Description>An open source, lightweight email client shell that hosts Gmail, Outlook and other webmail services side by side, switchable instantly like Outlook 365.</Description>
-    <AssemblyVersion>2.1.1</AssemblyVersion>
-    <FileVersion>2.1.1</FileVersion>
+    <Version>2.1.2</Version>
+    <AssemblyVersion>2.1.2</AssemblyVersion>
+    <FileVersion>2.1.2</FileVersion>
     <NeutralLanguage>en</NeutralLanguage>
   </PropertyGroup>
 

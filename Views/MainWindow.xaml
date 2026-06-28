@@ -37,9 +37,8 @@
 
             <Image Grid.Column="0" Source="/Resources/email.ico" Width="18" Height="18" Margin="14,0,8,0" VerticalAlignment="Center" />
 
-            <TextBlock Grid.Column="1" VerticalAlignment="Center" FontSize="12"
-                       Foreground="{DynamicResource TitleBarForegroundBrush}"
-                       Text="{Binding SelectedAccount.DisplayName, FallbackValue=Teron’s Email Client, TargetNullValue=Teron’s Email Client}" />
+            <TextBlock x:Name="TitleBarText" Grid.Column="1" VerticalAlignment="Center" FontSize="12"
+                       Foreground="{DynamicResource TitleBarForegroundBrush}" />
 
             <StackPanel Grid.Column="2" Orientation="Horizontal" WindowChrome.IsHitTestVisibleInChrome="True">
                 <Button x:Name="MinimizeButton" Style="{StaticResource TitleBarButtonStyle}" ToolTip="Minimize" Click="MinimizeButton_Click">
@@ -136,7 +135,7 @@
                         Background="{DynamicResource ContentBackgroundBrush}"
                         Visibility="{Binding ShowWelcome, Converter={StaticResource BoolToVisibilityConverter}}">
                     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" MaxWidth="640">
-                        <TextBlock Text="Welcome to Teron's Email Client" FontSize="26" FontWeight="SemiBold"
+                        <TextBlock Text="Welcome to Teron Email Client" FontSize="26" FontWeight="SemiBold"
                                    HorizontalAlignment="Center" />
                         <TextBlock Margin="0,8,0,28" FontSize="14" TextWrapping="Wrap" TextAlignment="Center"
                                    HorizontalAlignment="Center" Foreground="{DynamicResource TextSecondaryBrush}"

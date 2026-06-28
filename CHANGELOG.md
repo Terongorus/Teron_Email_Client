@@ -1,5 +1,19 @@
 # Changelog
 
+## 2.1.2 — Fix custom title bar not reflecting the display name fix
+
+### Fixed
+
+- The 2.1.1 fix only updated `Window.Title` (the taskbar/Alt-Tab title), which has no visible
+  effect here since the window uses a custom-drawn title bar (`WindowStyle="None"` +
+  `WindowChrome`). The actual on-screen title text was a separate `TextBlock` bound to
+  `SelectedAccount.DisplayName` with a hardcoded `FallbackValue`/`TargetNullValue` of
+  "Teron's Email Client" (using a typographic apostrophe, which made it easy to miss in a
+  plain-text search) - completely independent of the `Window.Title` property. The window now
+  sets both consistently from code-behind, with the version number included: the visible title
+  bar always matches the taskbar title, showing "Teron Email Client v2.1.2" or, when an account
+  is selected, "{account} - Teron Email Client v2.1.2".
+
 ## 2.1.1 — Display name cleanup
 
 ### Changed

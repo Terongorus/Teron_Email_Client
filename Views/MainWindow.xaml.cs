@@ -27,7 +27,8 @@ public partial class MainWindow : Window
         DataContext = viewModel;
 
         InitializeComponent();
-        Title = AppInfo.DisplayName;
+        Title = AppInfo.DisplayNameWithVersion;
+        TitleBarText.Text = Title;
 
         viewModel.PropertyChanged += OnViewModelPropertyChanged;
         viewModel.Accounts.CollectionChanged += OnAccountsCollectionChanged;
@@ -119,7 +120,11 @@ public partial class MainWindow : Window
             existing.Visibility = Visibility.Collapsed;
         }
 
-        Title = account is null ? AppInfo.DisplayName : $"{account.DisplayName} - {AppInfo.DisplayName}";
+        // Altap Salamander-style title: "<context> - <AppName> v<Version>", with the active
+        // account standing in for "context" so the visible title bar and the taskbar/Alt-Tab
+        // title always show the same string.
+        Title = account is null ? AppInfo.DisplayNameWithVersion : $"{account.DisplayName} - {AppInfo.DisplayNameWithVersion}";
+        TitleBarText.Text = Title;
 
         if (account is null)
         {
