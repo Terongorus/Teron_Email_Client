@@ -1,6 +1,16 @@
 # Changelog
 
-## 2.1.2 — Fix custom title bar not reflecting the display name fix
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
+Versions follow major.minor.hotfix (e.g. 1.2.3).
+
+## [2.1.3] - 2026-08-24
+
+### Added
+
+- Automatic build-number tracking (4th version component), consolidated `Build\` output
+  directory for all build artifacts.
+
+## [2.1.2] - 2026-06-28
 
 ### Fixed
 
@@ -14,7 +24,7 @@
   bar always matches the taskbar title, showing "Teron Email Client v2.1.2" or, when an account
   is selected, "{account} - Teron Email Client v2.1.2".
 
-## 2.1.1 — Display name cleanup
+## [2.1.1] - 2026-06-28
 
 ### Changed
 
@@ -26,7 +36,7 @@
   the assembly's `<Product>` metadata at runtime (`Services/AppInfo.cs`) instead of a separately
   hardcoded string, so they can't drift out of sync with the project file again.
 
-## 2.1.0 — Automated installer packaging
+## [2.1.0] - 2026-06-26
 
 ### Added
 
@@ -50,7 +60,7 @@
   and space can trip up scripts/tools that don't quote paths. Changed to
   `C:\Program Files\TeronEmailClient`.
 
-## 2.0.1 — Post-rewrite fixes
+## [2.0.1] - 2026-06-26
 
 ### Fixed
 
@@ -66,7 +76,7 @@
   selected account *before* removing it from the list, and deferring the native control's
   teardown (`Children.Remove` + `Dispose`) to a Background-priority dispatcher callback.
 
-## 2.0.0 — .NET 10 / WPF rewrite
+## [2.0.0] - 2026-06-26
 
 Full rewrite of the application, moving off .NET Framework 4.8.1/WinForms onto .NET 10/WPF,
 with a redesigned shell and several behavioral changes.
