@@ -88,4 +88,21 @@
               Condition="'$(InnoSetupArch)' != '' AND '$(SelfContained)' == 'true' AND '$(InnoSetupCompiler)' == ''" />
   </Target>
 
+  <!--
+    Directory.Build.props relocates obj\ under Build\obj\$(MSBuildProjectName)\, but the implicit
+    item globs (**/*.cs etc.) don't reliably exclude a STALE sibling Configuration/Platform folder
+    left there from an earlier build - its generated .g.cs files then get swept in as duplicate
+    source against the current build's own copy (CS0102/CS0111/CS8646). Not a real code problem,
+    just stale-artifact glob pollution; see the portfolio-wide write-up in project memory
+    (builder_stale_obj_glob_pollution) for the full mechanism and how this was found/verified.
+  -->
+  <ItemGroup>
+    <Compile Remove="Build\**" />
+    <EmbeddedResource Remove="Build\**" />
+    <None Remove="Build\**" />
+    <Page Remove="Build\**" />
+    <ApplicationDefinition Remove="Build\**" />
+    <Resource Remove="Build\**" />
+  </ItemGroup>
+
 </Project>
