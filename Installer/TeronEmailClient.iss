@@ -22,7 +22,7 @@
 #define MyAppName "Teron Email Client"
 #define MyAppPublisher "Teronverse"
 #define MyAppExeName "TeronEmailClient.exe"
-#define MyPublishDir "..\bin\Publish\TeronEmailClient_Win_" + Arch
+#define MyPublishDir "..\Build\Publish\TeronEmailClient\win-" + Arch
 
 [Setup]
 AppId={{7D04F7B9-39C6-46B1-968D-1EB5C6EE21D8}
