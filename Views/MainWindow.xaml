@@ -1,6 +1,6 @@
 <Window x:Class="TeronEmailClient.Views.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:shell="http://schemas.microsoft.com/netfx/2009/xaml/presentation"
         Title="Teron Email Client"
         Height="800" Width="1300" MinHeight="560" MinWidth="900"
         WindowStartupLocation="CenterScreen"
@@ -13,15 +13,20 @@
         Icon="/Resources/email.ico"
         StateChanged="Window_StateChanged">
 
-    <WindowChrome.WindowChrome>
-        <WindowChrome CaptionHeight="40"
-                      ResizeBorderThickness="6"
-                      CornerRadius="0"
-                      GlassFrameThickness="0"
-                      UseAeroCaptionButtons="False" />
-    </WindowChrome.WindowChrome>
+  <shell:WindowChrome.WindowChrome>
+    <!--
+    Replaces the default Windows title bar/icon/min-max-close with our own row (below), while
+    keeping the OS's resize handles, Aero Snap (drag-to-edge, Win+arrow), and drop shadow — those
+    come from WindowChrome itself, not from the native caption we're hiding. CaptionHeight must
+    match the custom title bar row's own Height so the OS treats exactly that strip as the
+    draggable/double-click-to-maximize caption area; the three buttons inside opt back out of that
+    via WindowChrome.IsHitTestVisibleInChrome so clicks register as clicks, not drags.
+  -->
+    <shell:WindowChrome CaptionHeight="52" ResizeBorderThickness="6" GlassFrameThickness="0" CornerRadius="0"
+                       UseAeroCaptionButtons="False"/>
+  </shell:WindowChrome.WindowChrome>
 
-    <Grid>
+  <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="40" />
             <RowDefinition Height="*" />

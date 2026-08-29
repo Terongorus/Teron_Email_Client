@@ -104,6 +104,6 @@ public partial class MainViewModel : ObservableObject
         _settings.ActiveAccountId = SelectedAccount?.Id;
         _settings.RememberLastAccount = RememberLastAccount;
         _settings.Theme = Theme;
-        return _configService.SaveAsync(_settings);
+        return ConfigService.SaveAsync(_settings);
     }
 }
