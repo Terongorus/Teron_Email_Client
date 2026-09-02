@@ -9,7 +9,7 @@
 ;   ISCC TeronEmailClient.iss              (defaults to x64)
 ;   ISCC /DArch=x86 TeronEmailClient.iss    (x86 build)
 ;
-; Output goes to bin\InstallerPackage\TeronEmailClientSetup-<arch>.exe
+; Output goes to Build\InstallerPackage\TeronEmailClientSetup-<arch>.exe
 
 #ifndef Arch
   #define Arch "x64"
@@ -35,7 +35,7 @@ DisableProgramGroupPage=yes
 LicenseFile=..\LICENSE.txt
 SetupIconFile=..\Resources\email.ico
 UninstallDisplayIcon={app}\{#MyAppExeName}
-OutputDir=..\bin\InstallerPackage
+OutputDir=..\Build\InstallerPackage
 OutputBaseFilename=TeronEmailClientSetup-{#Arch}
 Compression=lzma2/max
 SolidCompression=yes
