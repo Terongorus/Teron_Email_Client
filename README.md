@@ -46,7 +46,7 @@ dotnet publish -p:PublishProfile=win-x86 -c Release
 ```
 
 (Or, in Visual Studio: right-click the project → **Publish** → pick the `win-x64`/`win-x86`
-profile.) The published app goes to `bin\Publish\TeronEmailClient_Win_x64\` (or `_x86`).
+profile.) The published app goes to `Build\Publish\TeronEmailClient\win-x64\` (or `win-x86`).
 
 ### Installer package
 
@@ -62,7 +62,7 @@ After that, every `dotnet publish -p:PublishProfile=win-x64` (or the Visual Stud
 button) also produces:
 
 ```text
-bin\InstallerPackage\TeronEmailClientSetup-win-x64.exe
+bin\InstallerPackage\TeronEmailClientSetup-x64.exe
 ```
 
 That single file is what you'd attach to a GitHub release. If Inno Setup isn't installed, this

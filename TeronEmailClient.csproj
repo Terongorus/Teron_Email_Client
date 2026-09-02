@@ -21,11 +21,30 @@
     <Company>Teronverse</Company>
     <Copyright>Copyright © 2025-2026</Copyright>
     <Description>An open source, lightweight email client shell that hosts Gmail, Outlook and other webmail services side by side, switchable instantly like Outlook 365.</Description>
-    <Version>2.1.2</Version>
-    <AssemblyVersion>2.1.2</AssemblyVersion>
-    <FileVersion>2.1.2</FileVersion>
     <NeutralLanguage>en</NeutralLanguage>
   </PropertyGroup>
+
+  <PropertyGroup>
+    <MajorMinorPatchVersion>2.1.4</MajorMinorPatchVersion>
+    <BuildNumberFile>$(MSBuildProjectDirectory)\BuildNumber.txt</BuildNumberFile>
+  </PropertyGroup>
+
+  <Target Name="IncrementBuildNumber" BeforeTargets="BeforeBuild">
+    <ReadLinesFromFile File="$(BuildNumberFile)" Condition="Exists('$(BuildNumberFile)')">
+      <Output TaskParameter="Lines" ItemName="_BuildNumberLine" />
+    </ReadLinesFromFile>
+    <PropertyGroup>
+      <_PreviousBuildNumber Condition="'@(_BuildNumberLine)' != ''">@(_BuildNumberLine)</_PreviousBuildNumber>
+      <_PreviousBuildNumber Condition="'$(_PreviousBuildNumber)' == ''">0</_PreviousBuildNumber>
+      <BuildNumber>$([MSBuild]::Add($(_PreviousBuildNumber), 1))</BuildNumber>
+    </PropertyGroup>
+    <WriteLinesToFile File="$(BuildNumberFile)" Lines="$(BuildNumber)" Overwrite="true" />
+    <PropertyGroup>
+      <AssemblyVersion>$(MajorMinorPatchVersion).$(BuildNumber)</AssemblyVersion>
+      <FileVersion>$(MajorMinorPatchVersion).$(BuildNumber)</FileVersion>
+      <Version>$(MajorMinorPatchVersion).$(BuildNumber)</Version>
+    </PropertyGroup>
+  </Target>
 
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
@@ -63,10 +82,25 @@
       <InnoSetupCompiler Condition="'$(InnoSetupCompiler)' == '' AND Exists('$(ProgramFiles)\Inno Setup 6\ISCC.exe')">$(ProgramFiles)\Inno Setup 6\ISCC.exe</InnoSetupCompiler>
     </PropertyGroup>
 
-    <Exec Command="&quot;$(InnoSetupCompiler)&quot; /DArch=$(InnoSetupArch) /DMyAppVersion=$(FileVersion) &quot;$(MSBuildProjectDirectory)\Installer\TeronEmailClient.iss&quot;"
-          Condition="'$(InnoSetupArch)' != '' AND '$(SelfContained)' == 'true' AND '$(InnoSetupCompiler)' != ''" />
-    <Warning Text="Inno Setup (ISCC.exe) was not found in the usual install locations; skipping installer build. Install it with 'winget install JRSoftware.InnoSetup' to enable this step."
-              Condition="'$(InnoSetupArch)' != '' AND '$(SelfContained)' == 'true' AND '$(InnoSetupCompiler)' == ''" />
+    <Exec Command="&quot;$(InnoSetupCompiler)&quot; /DArch=$(InnoSetupArch) /DMyAppVersion=$(FileVersion) &quot;$(MSBuildProjectDirectory)\Installer\TeronEmailClient.iss&quot;" Condition="'$(InnoSetupArch)' != '' AND '$(SelfContained)' == 'true' AND '$(InnoSetupCompiler)' != ''" />
+    <Warning Text="Inno Setup (ISCC.exe) was not found in the usual install locations; skipping installer build. Install it with 'winget install JRSoftware.InnoSetup' to enable this step." Condition="'$(InnoSetupArch)' != '' AND '$(SelfContained)' == 'true' AND '$(InnoSetupCompiler)' == ''" />
   </Target>
+
+  <!--
+    Directory.Build.props relocates obj\ under Build\obj\$(MSBuildProjectName)\, but the implicit
+    item globs (**/*.cs etc.) don't reliably exclude a STALE sibling Configuration/Platform folder
+    left there from an earlier build - its generated .g.cs files then get swept in as duplicate
+    source against the current build's own copy (CS0102/CS0111/CS8646). Not a real code problem,
+    just stale-artifact glob pollution; see the portfolio-wide write-up in project memory
+    (builder_stale_obj_glob_pollution) for the full mechanism and how this was found/verified.
+  -->
+  <ItemGroup>
+    <Compile Remove="Build\**" />
+    <EmbeddedResource Remove="Build\**" />
+    <None Remove="Build\**" />
+    <Page Remove="Build\**" />
+    <ApplicationDefinition Remove="Build\**" />
+    <Resource Remove="Build\**" />
+  </ItemGroup>
 
 </Project>

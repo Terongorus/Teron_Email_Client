@@ -41,7 +41,7 @@ public partial class App : Application
         AppSettings settings = await configService.LoadAsync();
 
         MainViewModel viewModel = new(settings, configService);
-        MainWindow mainWindow = new(viewModel);
+        MainWindow mainWindow = new(viewModel, configService);
 
         MainWindow = mainWindow;
         mainWindow.Show();

@@ -3,7 +3,6 @@ using System.ComponentModel;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Threading;
@@ -18,22 +17,35 @@ namespace TeronEmailClient.Views;
 public partial class MainWindow : Window
 {
     private readonly MainViewModel _viewModel;
+    private readonly ConfigService _settings;
     private readonly Dictionary<Guid, WebView2> _webViews = [];
     private WebView2? _activeWebView;
 
-    public MainWindow(MainViewModel viewModel)
+    public MainWindow(MainViewModel viewModel, ConfigService configService)
     {
         _viewModel = viewModel;
+        _settings = configService;
         DataContext = viewModel;
 
         InitializeComponent();
+        WindowChromeHelper.FixMaximizedBounds(this);
         Title = AppInfo.DisplayNameWithVersion;
         TitleBarText.Text = Title;
 
         viewModel.PropertyChanged += OnViewModelPropertyChanged;
         viewModel.Accounts.CollectionChanged += OnAccountsCollectionChanged;
 
-        Loaded += async (_, _) => await ActivateAccountAsync(_viewModel.SelectedAccount);
+        RestoreWindowStateFromSettings();
+
+        Loaded += async (_, _) =>
+        {
+            await _settings.LoadAsync();
+            await ActivateAccountAsync(_viewModel.SelectedAccount);
+        };
+        Closing += async (sender, e) =>
+        {
+            await OnWindowClosing(sender, e);
+        };
         Closed += (_, _) =>
         {
             foreach (WebView2 webView in _webViews.Values)
@@ -47,6 +59,60 @@ public partial class MainWindow : Window
     {
         base.OnSourceInitialized(e);
         NativeMethods.TryEnableRoundedCorners(new WindowInteropHelper(this).Handle);
+    }
+
+    private async Task OnWindowClosing(object? sender, CancelEventArgs e)
+    {
+        AppSettings settings = _settings.Current;
+        Rect bounds = WindowState == WindowState.Normal ? new Rect(Left, Top, Width, Height) : RestoreBounds;
+        if (bounds.Width > 0 && bounds.Height > 0)
+        {
+            settings.WindowLeft = bounds.Left;
+            settings.WindowTop = bounds.Top;
+            settings.WindowWidth = bounds.Width;
+            settings.WindowHeight = bounds.Height;
+        }
+
+        settings.SavedWindowState = WindowState.ToString();
+        bool saveResult = await ConfigService.SaveAsync(settings);
+        if (!saveResult)
+        {
+            throw new InvalidOperationException("Failed to save configuration.");
+        }
+    }
+
+    private static bool IsOnVirtualScreen(double left, double top, double width, double height)
+    {
+        double screenLeft = SystemParameters.VirtualScreenLeft;
+        double screenTop = SystemParameters.VirtualScreenTop;
+        double screenRight = screenLeft + SystemParameters.VirtualScreenWidth;
+        double screenBottom = screenTop + SystemParameters.VirtualScreenHeight;
+        return left < screenRight && left + width > screenLeft && top < screenBottom && top + height > screenTop;
+    }
+
+    private void RestoreWindowStateFromSettings()
+    {
+        AppSettings s = _settings.Current;
+
+        if (s.WindowWidth is double w && s.WindowHeight is double h && w > 0 && h > 0)
+        {
+            Width = w;
+            Height = h;
+        }
+
+        // Only trust a saved position if the window would still land on a currently-connected
+        // monitor -- otherwise a since-removed second monitor could strand it off-screen forever.
+        if (s.WindowLeft is double l && s.WindowTop is double t && IsOnVirtualScreen(l, t, Width, Height))
+        {
+            WindowStartupLocation = WindowStartupLocation.Manual;
+            Left = l;
+            Top = t;
+        }
+
+        if (Enum.TryParse(s.SavedWindowState, out WindowState savedState))
+        {
+            WindowState = savedState;
+        }
     }
 
     private async void OnViewModelPropertyChanged(object? sender, PropertyChangedEventArgs e)
@@ -271,6 +337,7 @@ public partial class MainWindow : Window
     {
         MaximizeRestorePath.Data = (Geometry)FindResource(
             WindowState == WindowState.Maximized ? "IconRestore" : "IconMaximize");
+
     }
 
     private void MinimizeButton_Click(object sender, RoutedEventArgs e) => WindowState = WindowState.Minimized;
