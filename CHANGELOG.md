@@ -3,6 +3,23 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 Versions follow major.minor.hotfix (e.g. 1.2.3).
 
+## [2.1.4] - 2026-08-30
+
+### Added
+
+- The window's position, size, and maximized/normal state now persist across restarts, saved to
+  `config.json` on close and restored on next launch. A saved position is only trusted if it
+  would still land on a currently-connected monitor, so removing a second monitor can't strand
+  the window off-screen.
+
+### Fixed
+
+- The custom-chrome window overhung the taskbar/screen edge by its resize-border thickness when
+  maximized, clipping content along every edge. `WindowChrome`'s own `WM_NCCALCSIZE` handling was
+  silently re-expanding the maximized rect after the standard `WM_GETMINMAXINFO` fix had already
+  sized it correctly; the rect is now clamped back to the monitor's work area in `WM_NCCALCSIZE`
+  as well.
+
 ## [2.1.3] - 2026-08-24
 
 ### Added

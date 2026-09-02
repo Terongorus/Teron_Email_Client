@@ -77,8 +77,9 @@ namespace TeronEmailClient.Services
 namespace TeronEmailClient.Services
 {
     /// <summary>
-    /// Shared fix for any window using its own custom WindowChrome + title row (MainWindow,
-    /// MarkdownPreviewDialog, AddonDetailsDialog): without this, a maximized chromeless WindowChrome
+    /// Shared fix for any resizable window using its own custom WindowChrome + title row (only
+    /// MainWindow here — AddAccountWindow/SettingsWindow are ResizeMode="NoResize" and can't be
+    /// maximized, so they're unaffected): without this, a maximized chromeless WindowChrome
     /// window overhangs the taskbar/screen edge and gets clipped there — the whole UI reads as though
     /// it's been pushed in a few pixels from every edge compared to the same window un-maximized.
     ///

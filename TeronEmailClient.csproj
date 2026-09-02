@@ -25,9 +25,8 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <MajorMinorPatchVersion>2.1.3</MajorMinorPatchVersion>
+    <MajorMinorPatchVersion>2.1.4</MajorMinorPatchVersion>
     <BuildNumberFile>$(MSBuildProjectDirectory)\BuildNumber.txt</BuildNumberFile>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <Target Name="IncrementBuildNumber" BeforeTargets="BeforeBuild">
@@ -102,9 +101,6 @@
     <Page Remove="Build\**" />
     <ApplicationDefinition Remove="Build\**" />
     <Resource Remove="Build\**" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Native\" />
   </ItemGroup>
 
 </Project>
