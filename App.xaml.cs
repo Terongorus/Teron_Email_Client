@@ -13,6 +13,7 @@ namespace TeronEmailClient;
 public partial class App : Application
 {
     private Mutex? _singleInstanceMutex;
+    private bool _ownsSingleInstanceMutex;
 
     protected override async void OnStartup(StartupEventArgs e)
     {
@@ -25,7 +26,12 @@ public partial class App : Application
             args.SetObserved();
         };
 
+        // Opening an already-existing named mutex never grants this thread ownership, even with
+        // initiallyOwned: true - only the process that actually creates it owns it. Releasing it
+        // unconditionally from the "already running" (second-instance) branch below was calling
+        // ReleaseMutex on a handle this process never owned, throwing on every duplicate launch.
         _singleInstanceMutex = new Mutex(true, "TeronEmailClient.SingleInstance", out bool createdNew);
+        _ownsSingleInstanceMutex = createdNew;
         if (!createdNew)
         {
             MessageBox.Show(
@@ -49,7 +55,11 @@ public partial class App : Application
 
     protected override void OnExit(ExitEventArgs e)
     {
-        _singleInstanceMutex?.ReleaseMutex();
+        if (_ownsSingleInstanceMutex)
+        {
+            _singleInstanceMutex?.ReleaseMutex();
+        }
+
         base.OnExit(e);
     }
 

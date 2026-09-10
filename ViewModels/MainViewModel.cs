@@ -22,6 +22,7 @@ public partial class MainViewModel : ObservableObject
         }
 
         RememberLastAccount = settings.RememberLastAccount;
+        NotificationsEnabled = settings.NotificationsEnabled;
         Theme = settings.Theme;
         ThemeManager.Apply(Theme);
 
@@ -40,6 +41,9 @@ public partial class MainViewModel : ObservableObject
 
     [ObservableProperty]
     private bool _rememberLastAccount;
+
+    [ObservableProperty]
+    private bool _notificationsEnabled;
 
     [ObservableProperty]
     private AppTheme _theme;
@@ -63,6 +67,14 @@ public partial class MainViewModel : ObservableObject
         }
     }
 
+    partial void OnNotificationsEnabledChanged(bool value)
+    {
+        if (_isLoaded)
+        {
+            _ = PersistAsync();
+        }
+    }
+
     partial void OnThemeChanged(AppTheme value)
     {
         ThemeManager.Apply(value);
@@ -72,11 +84,26 @@ public partial class MainViewModel : ObservableObject
         }
     }
 
-    public AccountViewModel AddAccount(string displayName, ServiceType service, string url)
+    public AccountViewModel AddAccount(string email, string displayName, ServiceType service, string url)
     {
+        // Accounts are keyed by email, not display name/provider - re-adding one that's already
+        // signed in just re-selects the existing entry instead of creating a duplicate. An empty
+        // email means a Gmail/Outlook sign-in is still pending (MainWindow fills it in once the
+        // account's WebView2 reads the real address back from the signed-in page), so there's
+        // nothing meaningful to dedupe against yet - always create a new entry for those.
+        AccountViewModel? existing = string.IsNullOrEmpty(email)
+            ? null
+            : Accounts.FirstOrDefault(a => string.Equals(a.Email, email, StringComparison.OrdinalIgnoreCase));
+        if (existing is not null)
+        {
+            SelectedAccount = existing;
+            return existing;
+        }
+
         EmailAccount account = new()
         {
-            DisplayName = displayName,
+            Email = email,
+            DisplayName = string.IsNullOrWhiteSpace(displayName) ? $"Signing in to {ServiceCatalog.Get(service).DisplayName}…" : displayName,
             Service = service,
             Url = url
         };
@@ -103,6 +130,7 @@ public partial class MainViewModel : ObservableObject
         _settings.Accounts = Accounts.Select(a => a.Account).ToList();
         _settings.ActiveAccountId = SelectedAccount?.Id;
         _settings.RememberLastAccount = RememberLastAccount;
+        _settings.NotificationsEnabled = NotificationsEnabled;
         _settings.Theme = Theme;
         return ConfigService.SaveAsync(_settings);
     }
