@@ -134,7 +134,14 @@
         <Setter Property="Margin" Value="0,4" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="Focusable" Value="False" />
-        <Setter Property="ToolTip" Value="{Binding DisplayName}" />
+        <Setter Property="ToolTip">
+            <Setter.Value>
+                <MultiBinding StringFormat="{}{0} ({1})">
+                    <Binding Path="DisplayName" />
+                    <Binding Path="Email" />
+                </MultiBinding>
+            </Setter.Value>
+        </Setter>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ListBoxItem">

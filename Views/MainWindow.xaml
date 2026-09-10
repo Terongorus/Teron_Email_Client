@@ -80,10 +80,10 @@
                              SelectedItem="{Binding SelectedAccount}" />
 
                     <StackPanel Grid.Row="1" Margin="0,0,0,12">
-                        <Button Style="{StaticResource NavRailActionButtonStyle}" ToolTip="Add account" Click="AddAccountButton_Click">
+                        <Button x:Name="AddAccountButton" Style="{StaticResource NavRailActionButtonStyle}" ToolTip="Add account" Click="AddAccountButton_Click">
                             <Path Style="{StaticResource ButtonIconPathStyle}" Data="{StaticResource IconAdd}" />
                         </Button>
-                        <Button Style="{StaticResource NavRailActionButtonStyle}" ToolTip="Settings" Click="SettingsButton_Click">
+                        <Button x:Name="SettingsButton" Style="{StaticResource NavRailActionButtonStyle}" ToolTip="Settings" Click="SettingsButton_Click">
                             <Path Style="{StaticResource ButtonIconPathStyle}" Data="{StaticResource IconSettings}"
                                   Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" />
                         </Button>

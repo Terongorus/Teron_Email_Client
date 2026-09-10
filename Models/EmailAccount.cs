@@ -1,8 +1,13 @@
+using System.Text.Json.Serialization;
+using TeronEmailClient.Services;
+
 namespace TeronEmailClient.Models;
 
+[JsonConverter(typeof(EmailAccountJsonConverter))]
 public sealed class EmailAccount
 {
     public Guid Id { get; init; } = Guid.NewGuid();
+    public required string Email { get; set; }
     public required string DisplayName { get; set; }
     public required ServiceType Service { get; set; }
     public required string Url { get; set; }
