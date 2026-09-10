@@ -3,6 +3,37 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 Versions follow major.minor.hotfix (e.g. 1.2.3).
 
+## [2.2.0] - 2026-09-11
+
+### Added
+
+- Windows toast notifications for new mail, using the same notification pipeline as Edge/Chrome.
+  Can be turned off from Settings.
+- Keyboard shortcuts for the toolbar: F5 to reload, Home to return to the account's home page,
+  and Alt+Left/Alt+Right (or a keyboard's dedicated browser back/forward keys) to navigate.
+
+### Changed
+
+- Adding a Gmail or Outlook account no longer asks for an email address or display name up
+  front. Instead, you sign in directly through the provider's own login page, and your real
+  email and name are read automatically once sign-in completes. The manual email/URL/display
+  name fields are now shown only when adding a custom mailbox.
+- Accounts are now identified and displayed by their real email address and name everywhere
+  (sidebar, title bar, Settings) instead of the generic provider name - so two different Gmail
+  accounts no longer both show up as an identical "G" badge.
+- Links opened from inside an account (e.g. a link in an email) now open in the system's default
+  browser instead of a native app window. Google/Microsoft sign-in pages are the one exception
+  and still open inside the app, since that's required to share the session with the right
+  account.
+
+### Fixed
+
+- Newly added accounts could fail to survive an app restart in some cases - saving the
+  configuration now reliably finishes before the app closes.
+- The "Add account" dialog's bottom field could be visually clipped; the dialog now always sizes
+  itself to fit its content.
+- Closing a second, already-running instance of the app could log an internal error on exit.
+
 ## [2.1.4] - 2026-08-30
 
 ### Added

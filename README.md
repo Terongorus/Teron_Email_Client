@@ -8,17 +8,22 @@ Built with **.NET 10** and **WPF**.
 
 ## Features
 
-- **Multi-account sidebar** — add Gmail, Outlook, and custom webmail accounts; switch between
-  them instantly without reloading, since each account keeps its own live, isolated
-  [WebView2](https://developer.microsoft.com/microsoft-edge/webview2/) instance and browser
-  profile (separate cookies/session per account, so you can be signed into two Gmail accounts
-  at once).
+- **Multi-account sidebar** — add Gmail or Outlook by signing in directly through the
+  provider's own login page (your email and name are picked up automatically), or add any
+  custom webmail URL; switch between accounts instantly without reloading, since each keeps its
+  own live, isolated [WebView2](https://developer.microsoft.com/microsoft-edge/webview2/)
+  instance and browser profile (separate cookies/session per account, so you can be signed into
+  two Gmail accounts at once).
 - **Fluent-styled shell** — custom title bar, account avatars, browser-style navigation
-  (back/forward/reload/home), light and dark themes.
-- **OAuth-friendly** — sign-in popups (Google/Microsoft account pickers, 2FA) are handled as
-  real popup windows sharing the parent account's session, instead of being silently blocked.
-- **Settings** — toggle "remember last account on startup", switch theme, and remove accounts
-  (which also deletes that account's local browser profile data).
+  (back/forward/reload/home, with F5/Home/Alt+Left/Alt+Right keyboard shortcuts), light and dark
+  themes.
+- **OAuth-friendly** — Google/Microsoft sign-in stays embedded in the app so the session lands
+  in the right account's profile; every other link (e.g. one inside an email) opens in your
+  system's default browser instead of a native popup.
+- **Windows toast notifications** — get notified when new mail arrives, using the same
+  notification pipeline as Edge/Chrome. Toggle from Settings.
+- **Settings** — toggle "remember last account on startup" and notifications, switch theme, and
+  remove accounts (which also deletes that account's local browser profile data).
 
 ## Requirements
 
